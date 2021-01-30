@@ -1,0 +1,15 @@
+# --- !Ups
+
+create table "USER" (
+  "USERNAME"    VARCHAR NOT NULL PRIMARY KEY,
+  "EMAIL"       VARCHAR NOT NULL,
+  "START_DATE"  TIMESTAMP(0) DEFAULT NOW() NOT NULL,
+  "END_DATE"    TIMESTAMP(0) DEFAULT NULL  NULL
+);
+
+INSERT INTO "USER" ("USERNAME", "EMAIL", "START_DATE", "END_DATE") VALUES ('luiscocr', 'anthonydicortes@gmail.com', '2021-01-30 12:00:00', NULL);
+INSERT INTO "USER" ("USERNAME", "EMAIL", "START_DATE", "END_DATE") VALUES ('carlvare', 'carlvare@gmail.com', NOW(), NULL);
+
+# --- !Downs
+
+DROP TABLE "USER" if EXISTS;
