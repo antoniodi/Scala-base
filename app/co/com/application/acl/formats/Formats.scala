@@ -1,8 +1,8 @@
 package co.com.application.acl.formats
 
-import co.com.application.acl.dtos.UserDTO
+import co.com.application.acl.dtos.{AdminDTO, CustomerDTO, UserDTO, UserDTO1}
 import co.com.suite.error.ApplicationError
-import play.api.libs.json.{ JsObject, JsString, Json, Writes }
+import play.api.libs.json.{JsObject, JsString, JsValue, Json, Reads, Writes}
 
 object Formats {
 
@@ -15,5 +15,19 @@ object Formats {
   //    }
   //  }
 
-  implicit val userDTOFormat = Json.format[UserDTO]
+  implicit val userDTOWrite: Writes[UserDTO1] = Json.writes[UserDTO1]
+
+  implicit val userDTOReads: Reads[UserDTO] = ( json: JsValue ) => {
+    ( json \ "rol" ).asOpt[String] match {
+      case Some( "admin" )    => Json.reads[AdminDTO].reads( json )
+      case Some( "customer" ) => Json.reads[CustomerDTO].reads( json )
+      case _ => Json.reads[CustomerDTO].reads( json )
+    }
+  }
+}
+
+object UserFormats {
+
+  val AdminDTOReads: Reads[AdminDTO] = Json.reads[AdminDTO]
+  val CustomerDTOReads: Reads[CustomerDTO] = Json.reads[CustomerDTO]
 }
