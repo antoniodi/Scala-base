@@ -7,9 +7,9 @@ final case class TransactionError( error: String ) extends PersistanceError {
 }
 
 final case class SaveError( tableName: String ) extends PersistanceError {
-  override def errorMessage: String = s"One error occur trying to save a $tableName"
+  override def errorMessage: String = s"An error occurred trying to save a $tableName."
 }
 
 final case class FindError( tableName: String, id: String ) extends PersistanceError {
-  override def errorMessage: String = s"One error occur trying to find a $tableName with id: $id."
+  override def errorMessage: String = s"An error occurred trying to find a $tableName with id: $id."
 }
