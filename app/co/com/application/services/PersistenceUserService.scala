@@ -10,16 +10,15 @@ import monix.eval.Task
 trait PersistenceUserService {
 
   def saveUser( userDTO: UserDTO ): Reader[Dependency, EitherTResult[Done]] = Reader {
-    dependepncy: Dependency =>
-
-      val userId = dependepncy.userRepo.generateId()
+    dependency: Dependency =>
 
       for {
-        user <- dependepncy.userRepo.findWithTask( userDTO.username ).run( dependepncy.dbReadOnly )
-        _ <- EitherT( Task( dependepncy.userService.validateExistingUser( user ) ) )
+        user <- dependency.userRepo.findWithTask( userDTO.username ).run( dependency.dbReadOnly )
+        _ <- EitherT( Task( dependency.userService.validateExistingUser( user ) ) )
+        userId = dependency.userRepo.generateId()
         newUser = UserDTO.toUser( userId, userDTO )
-        currentDate = dependepncy.serviceHelper.getCurrentLocalDateTime
-        _ <- dependepncy.userRepo.add( newUser, currentDate ).run( dependepncy.dbConfig )
+        currentDate = dependency.serviceHelper.getCurrentLocalDateTime()
+        _ <- dependency.userRepo.add( newUser, currentDate ).run( dependency.dbConfig )
       } yield Done
 
   }

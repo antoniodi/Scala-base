@@ -1,4 +1,4 @@
-package co.com.infrastructure.persistance.tables.enhancements
+package co.com.infrastructure.persistence.tables.enhancements
 
 import slick.lifted.Rep
 

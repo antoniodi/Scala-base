@@ -1,18 +1,18 @@
 package co.com.application.controllers
 
+import co.com.{maxCommandThreadPool, newCustomCachedThreadPool}
 import monix.execution.ExecutionModel.AlwaysAsyncExecution
-import monix.execution.{ Features, UncaughtExceptionReporter }
 import monix.execution.schedulers.ExecutorScheduler
+import monix.execution.{Features, UncaughtExceptionReporter}
 
-import java.util.concurrent.Executors
-import scala.concurrent.{ ExecutionContext, ExecutionContextExecutorService }
+import scala.concurrent.{ExecutionContext, ExecutionContextExecutorService}
 
 package object commands {
 
-  lazy val commandExecutionContext: ExecutionContextExecutorService = ExecutionContext.fromExecutorService( Executors.newFixedThreadPool( 5 ) )
+  lazy val commandExecutionContext: ExecutionContextExecutorService = ExecutionContext.fromExecutorService( newCustomCachedThreadPool( maxCommandThreadPool ) )
 
   lazy val commandScheduler: ExecutorScheduler = ExecutorScheduler(
-    Executors.newFixedThreadPool( 10 ),
+    newCustomCachedThreadPool( maxCommandThreadPool ),
     UncaughtExceptionReporter( t => println( s"this should not happen: ${t.getMessage}" ) ),
     AlwaysAsyncExecution,
     Features.empty

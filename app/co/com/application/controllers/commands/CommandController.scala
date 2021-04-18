@@ -1,11 +1,10 @@
 package co.com.application.controllers.commands
 
-import akka.actor.ActorSystem
 import co.com.application.services.{ PersistenceUserService, ServiceHelper }
 import co.com.domain.contracts.UserRepositoryBase
 import co.com.domain.services.UserService
-import co.com.infrastructure.persistance.repositories.UserRepository
-import co.com.infrastructure.persistance.{ dbConfigPostgres, dbConfigReadOnlyPostgres }
+import co.com.infrastructure.persistence.repositories.UserRepository
+import co.com.infrastructure.persistence.{ dbConfigH2, dbConfigPostgres, dbConfigReadOnlyPostgres }
 import co.com.infrastructure.services.RequestPostService
 import com.google.inject.Injector
 import play.api.libs.ws.WSClient
@@ -24,12 +23,11 @@ class Dependency @Inject() (
     val config: Configuration,
     val ws: WSClient,
     val injector: Injector,
-    val actor: ActorSystem,
     val environment: Environment
 ) {
 
-  lazy val dbConfig: DatabaseConfig[JdbcProfile] = dbConfigPostgres
-  lazy val dbReadOnly: DatabaseConfig[JdbcProfile] = dbConfigReadOnlyPostgres
+  lazy val dbConfig: DatabaseConfig[JdbcProfile] = dbConfigH2
+  lazy val dbReadOnly: DatabaseConfig[JdbcProfile] = dbConfigH2
 
   lazy val userRepo: UserRepositoryBase = UserRepository
 

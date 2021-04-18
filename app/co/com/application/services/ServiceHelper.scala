@@ -4,7 +4,7 @@ import java.time.LocalDateTime
 
 trait ServiceHelper {
 
-  def getCurrentLocalDateTime: LocalDateTime = LocalDateTime.now()
+  def getCurrentLocalDateTime(): LocalDateTime = LocalDateTime.now()
 
 }
 

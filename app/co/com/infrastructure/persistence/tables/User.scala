@@ -1,12 +1,12 @@
-package co.com.infrastructure.persistance.tables
+package co.com.infrastructure.persistence.tables
 
-import co.com.infrastructure.persistance.tables.enhancements.ModificableTB
+import co.com.infrastructure.persistence.tables.enhancements.ModificableTB
 import slick.jdbc.PostgresProfile.api._
 import slick.lifted.Tag
 
 import java.sql.Timestamp
 
-final case class UserRecord(
+final case class UserRow(
     id: String,
     username: String,
     email: String,
@@ -14,7 +14,7 @@ final case class UserRecord(
     validTo: Option[Timestamp] = None
 )
 
-class UserTable( tag: Tag ) extends Table[UserRecord]( tag, "USER" ) with ModificableTB {
+class UserTable( tag: Tag ) extends Table[UserRow]( tag, "USER" ) with ModificableTB {
 
   def id = column[String]( "ID" )
   def username = column[String]( "USERNAME" )
@@ -24,7 +24,9 @@ class UserTable( tag: Tag ) extends Table[UserRecord]( tag, "USER" ) with Modifi
 
   def pk = primaryKey( "USER_PK", id )
 
-  def idx = index( "user_unique", ( username, email ), unique = true )
+  def idx_01 = index( "user_username_unique", username, unique = true )
 
-  def * = ( id, username, email, validFrom, validTo ).mapTo[UserRecord]
+  def idx_02 = index( "user_email_unique", email, unique = true )
+
+  def * = ( id, username, email, validFrom, validTo ).mapTo[UserRow]
 }

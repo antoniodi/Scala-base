@@ -22,6 +22,8 @@ lazy val root = (project in file("."))
       "org.scalariform"             %% "scalariform"              % "0.2.10",
       "org.postgresql"              % "postgresql"                % "42.2.5",
       "com.h2database"              % "h2"                        % "1.4.199",
+      "org.scalatest"               %% "scalatest"                % "3.2.7"     % Test,
+      "org.scalamock"               %% "scalamock"                % "5.1.0"     % Test,
       specs2 % Test
     ),
     resolvers ++= Seq(

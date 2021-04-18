@@ -1,4 +1,4 @@
-package co.com.infrastructure.persistance
+package co.com.infrastructure.persistence
 
 import slick.lifted.TableQuery
 

@@ -1,12 +1,12 @@
-package co.com.infrastructure.persistance.repositories
+package co.com.infrastructure.persistence.repositories
 
 import akka.Done
 import cats.data.{ EitherT, NonEmptyList, Reader }
 import co.com.domain.contracts.UserRepositoryBase
 import co.com.domain.model.entities.User
 import co.com.infrastructure.Types.{ EitherFResult, EitherTResult }
-import co.com.infrastructure.persistance.generarUUID
-import co.com.infrastructure.persistance.tables.{ UserRecord, users }
+import co.com.infrastructure.persistence.generarUUID
+import co.com.infrastructure.persistence.tables.{ UserRow, users }
 import co.com.suite.error.{ FindError, SaveError, TransactionError }
 import monix.eval.Task
 import slick.basic.DatabaseConfig
@@ -27,7 +27,7 @@ object UserRepository extends UserRepositoryBase {
   def add( user: User, validFrom: LocalDateTime ): Reader[DatabaseConfig[JdbcProfile], EitherTResult[Done]] = Reader {
     dbConfig: DatabaseConfig[JdbcProfile] =>
 
-      val query = users += UserRecord( user.id, user.username, user.email, Timestamp.valueOf( validFrom ) )
+      val query = users += userToUserRow( user, validFrom )
 
       EitherT {
         Task.deferFuture( dbConfig.db.run( query ) )
@@ -45,7 +45,7 @@ object UserRepository extends UserRepositoryBase {
 
       EitherT {
         Task.deferFuture( dbConfig.db.run( query.result ) )
-          .map( result => Right( result.headOption.map( userRecord => User( userRecord.id, userRecord.username, userRecord.email ) ) ) )
+          .map( result => Right( result.headOption.map( userRowToUser ) ) )
           .onErrorRecover {
             case error: Throwable => Left( NonEmptyList.of( FindError( "user", username ), TransactionError( error.getMessage ) ) )
           }
@@ -63,7 +63,7 @@ object UserRepository extends UserRepositoryBase {
 
       EitherT {
         dbConfig.db.run( query.result )
-          .map( result => Right( result.headOption.map( userRecord => User( userRecord.id, userRecord.username, userRecord.email ) ) ) )
+          .map( result => Right( result.headOption.map( userRowToUser ) ) )
           .recover {
             case error: Throwable => Left( NonEmptyList.of( FindError( "user", username ), TransactionError( error.getMessage ) ) )
           }
@@ -72,6 +72,14 @@ object UserRepository extends UserRepositoryBase {
 
   def generateId(): String = {
     s"u-$generarUUID"
+  }
+
+  private[repositories] def userToUserRow( user: User, validFrom: LocalDateTime ): UserRow = {
+    UserRow( user.id, user.username, user.email, Timestamp.valueOf( validFrom ) )
+  }
+
+  private[repositories] def userRowToUser( user: UserRow ): User = {
+    User( user.id, user.username, user.email )
   }
 
 }
