@@ -2,7 +2,6 @@ package co.com.application.services
 
 import akka.Done
 import cats.data.NonEmptyList
-import co.com.domain.model.entities.User
 import co.com.factories.UserDTOFactory.LouisUserDTO
 import co.com.factories.UserFactory.LouisUser
 import co.com.mock.repositories.MockPersistenceUserService
@@ -10,7 +9,6 @@ import co.com.suite.error.{TransactionError, UserAlreadyExits}
 import co.com.tool.FutureTool.waitForFutureResult
 import co.com.{FalseConfigurations, TestKit}
 import org.scalatest.matchers.must.Matchers.convertToAnyMustWrapper
-import org.specs2.mock.Mockito.any
 
 import java.time.LocalDateTime
 
