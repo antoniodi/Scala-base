@@ -33,7 +33,9 @@ class UserRepositoryTest extends TestKit with TestKitBase with BeforeAndAfter {
         "return Done" in {
           val user = LouisUser.copy( id = "a-a", username = "newuser", email = "newuser@gmail.com" )
 
-          val result = waitForFutureResult( UserRepository.add( user, validFrom ).run( dbConfigH2Test ).value.runToFuture )
+          val result = waitForFutureResult(
+            UserRepository.add( user, validFrom ).run( dbConfigH2Test ).value.runToFuture
+          )
 
           result mustBe Right( Done )
         }
@@ -43,7 +45,9 @@ class UserRepositoryTest extends TestKit with TestKitBase with BeforeAndAfter {
         "return an error" in {
           val user = LouisUser.copy( username = "newuser", email = "newuser@gmail.com" )
 
-          val result = waitForFutureResult( UserRepository.add( user, validFrom ).run( dbConfigH2Test ).value.runToFuture )
+          val result = waitForFutureResult(
+            UserRepository.add( user, validFrom ).run( dbConfigH2Test ).value.runToFuture
+          )
 
           result.isInstanceOf[Left[NonEmptyList[ApplicationError], Done]] mustBe true
         }

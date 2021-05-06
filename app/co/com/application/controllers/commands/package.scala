@@ -1,11 +1,11 @@
 package co.com.application.controllers
 
-import co.com.{maxCommandThreadPool, newCustomCachedThreadPool}
+import co.com.{ maxCommandThreadPool, newCustomCachedThreadPool }
 import monix.execution.ExecutionModel.AlwaysAsyncExecution
 import monix.execution.schedulers.ExecutorScheduler
-import monix.execution.{Features, UncaughtExceptionReporter}
+import monix.execution.{ Features, UncaughtExceptionReporter }
 
-import scala.concurrent.{ExecutionContext, ExecutionContextExecutorService}
+import scala.concurrent.{ ExecutionContext, ExecutionContextExecutorService }
 
 package object commands {
 
