@@ -1,14 +1,14 @@
 package co.com.infrastructure.persistence.repositories
 
 import akka.Done
-import cats.data.{EitherT, NonEmptyList, Reader}
+import cats.data.{ EitherT, NonEmptyList, Reader }
 import co.com.domain.contracts.UserRepositoryBase
 import co.com.domain.model.entities.User
-import co.com.infrastructure.Types.{EitherFResult, EitherTResult}
+import co.com.infrastructure.Types.{ EitherFResult, EitherTResult }
 import co.com.infrastructure.persistence.generarUUID
-import co.com.infrastructure.persistence.tables.{UserRow, users}
-import co.com.infrastructure.persistence.transformers.UserTransformer.userToUserRow
-import co.com.suite.error.{FindError, SaveError, TransactionError}
+import co.com.infrastructure.persistence.tables.users
+import co.com.infrastructure.persistence.transformers.UserTransformer.{ userRowToUser, userToUserRow }
+import co.com.suite.error.{ FindError, SaveError, TransactionError }
 import monix.eval.Task
 import org.slf4j
 import play.api.Logger
@@ -82,10 +82,6 @@ object UserRepository extends UserRepositoryBase {
 
   def generateId(): String = {
     s"u-$generarUUID"
-  }
-
-  private[repositories] def userRowToUser( user: UserRow ): User = {
-    User( user.id, user.username, user.email )
   }
 
 }

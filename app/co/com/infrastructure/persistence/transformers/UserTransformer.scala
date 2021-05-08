@@ -8,8 +8,12 @@ import java.time.LocalDateTime
 
 object UserTransformer {
 
-  private[repositories] def userToUserRow( user: User, validFrom: LocalDateTime ): UserRow = {
+  def userToUserRow( user: User, validFrom: LocalDateTime ): UserRow = {
     UserRow( user.id, user.username, user.email, Timestamp.valueOf( validFrom ) )
+  }
+
+  def userRowToUser( user: UserRow ): User = {
+    User( user.id, user.username, user.email )
   }
 
 }
