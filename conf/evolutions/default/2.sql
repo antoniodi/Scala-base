@@ -11,6 +11,10 @@ create table "USER" (
 INSERT INTO "USER" ("ID", "USERNAME", "EMAIL", "START_DATE", "END_DATE") VALUES ('1', 'luiscocr', 'anthonydicortes@gmail.com', '2021-01-30 12:00:00', NULL);
 INSERT INTO "USER" ("ID", "USERNAME", "EMAIL", "START_DATE", "END_DATE") VALUES ('2', 'carlvare', 'carlvare@gmail.com', NOW(), NULL);
 
+CREATE UNIQUE INDEX "UIDX_USER_EMAIL" ON "USER" ("EMAIL");
+
 # --- !Downs
+
+DROP INDEX IF EXISTS "UIDX_USER_EMAIL";
 
 DROP TABLE "USER" if EXISTS;

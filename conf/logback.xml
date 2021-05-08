@@ -15,7 +15,7 @@
 
   <logger name="play" level="INFO"/>
   <logger name="application" level="DEBUG"/>
-  <logger name="application" level="INFO"/>
+  <logger name="infrastructure" level="INFO"/>
 
   <root level="INFO">
     <appender-ref ref="ASYNCSTDOUT"/>
