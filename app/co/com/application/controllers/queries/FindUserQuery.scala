@@ -6,7 +6,7 @@ import co.com.application.controllers.commands.Dependency
 import org.slf4j
 import play.api.Logger
 import play.api.libs.json.Json
-import play.api.mvc.{Action, AnyContent, MessagesAbstractController, MessagesControllerComponents}
+import play.api.mvc.{ Action, AnyContent, MessagesAbstractController, MessagesControllerComponents }
 
 import javax.inject.Inject
 import scala.concurrent.ExecutionContextExecutorService

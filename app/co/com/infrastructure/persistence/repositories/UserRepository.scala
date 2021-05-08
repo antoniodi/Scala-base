@@ -9,6 +9,8 @@ import co.com.infrastructure.persistence.generarUUID
 import co.com.infrastructure.persistence.tables.{ UserRow, users }
 import co.com.suite.error.{ FindError, SaveError, TransactionError }
 import monix.eval.Task
+import org.slf4j
+import play.api.Logger
 import slick.basic.DatabaseConfig
 import slick.jdbc.JdbcProfile
 import slick.jdbc.PostgresProfile.api._
@@ -18,6 +20,8 @@ import java.time.LocalDateTime
 import scala.concurrent.ExecutionContext
 
 object UserRepository extends UserRepositoryBase {
+
+  val logger: slf4j.Logger = Logger( getClass ).logger
 
   /**
    * Implementation with Task of Monix (Monix library)
@@ -33,7 +37,9 @@ object UserRepository extends UserRepositoryBase {
         Task.deferFuture( dbConfig.db.run( query ) )
           .map( _ => Right( Done ) )
           .onErrorRecover {
-            case error: Throwable => Left( NonEmptyList.of( SaveError( "user" ), TransactionError( error.getMessage ) ) )
+            case error: Throwable =>
+              logger.error( s"${SaveError( "user" ).errorMessage}.", error )
+              Left( NonEmptyList.of( SaveError( "user" ), TransactionError( error.getMessage ) ) )
           }
       }
   }
@@ -47,7 +53,9 @@ object UserRepository extends UserRepositoryBase {
         Task.deferFuture( dbConfig.db.run( query.result ) )
           .map( result => Right( result.headOption.map( userRowToUser ) ) )
           .onErrorRecover {
-            case error: Throwable => Left( NonEmptyList.of( FindError( "user", username ), TransactionError( error.getMessage ) ) )
+            case error: Throwable =>
+              logger.error( FindError( "user", username ).errorMessage, error )
+              Left( NonEmptyList.of( FindError( "user", username ), TransactionError( error.getMessage ) ) )
           }
       }
   }
@@ -65,7 +73,9 @@ object UserRepository extends UserRepositoryBase {
         dbConfig.db.run( query.result )
           .map( result => Right( result.headOption.map( userRowToUser ) ) )
           .recover {
-            case error: Throwable => Left( NonEmptyList.of( FindError( "user", username ), TransactionError( error.getMessage ) ) )
+            case error: Throwable =>
+              logger.error( FindError( "user", username ).errorMessage, error )
+              Left( NonEmptyList.of( FindError( "user", username ), TransactionError( error.getMessage ) ) )
           }
       }
   }
