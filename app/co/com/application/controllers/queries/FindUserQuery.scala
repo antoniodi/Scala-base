@@ -6,7 +6,7 @@ import co.com.application.controllers.commands.Dependency
 import org.slf4j
 import play.api.Logger
 import play.api.libs.json.Json
-import play.api.mvc.{MessagesAbstractController, MessagesControllerComponents}
+import play.api.mvc.{ Action, AnyContent, MessagesAbstractController, MessagesControllerComponents }
 
 import javax.inject.Inject
 import scala.concurrent.ExecutionContextExecutorService
@@ -17,14 +17,14 @@ class FindUserQuery @Inject() (
 
   implicit val ec: ExecutionContextExecutorService = queryExecutionContext
 
-  val logger: slf4j.Logger = Logger( getClass ).logger //LoggerFactory.getLogger( getClass )
+  val logger: slf4j.Logger = Logger( getClass ).logger
 
-  def findUser( username: String ) = Action.async { implicit request =>
+  def findUser( username: String ): Action[AnyContent] = Action.async { implicit request =>
 
     logger.info( "find users" )
     dependency.userRepo.findWithFuture( username ).run( dependency.dbReadOnly )
       .fold( { errors =>
-        logger.error( s"errors occurs: ${errors.toString()}." )
+        logger.error( s"an error was occurred: ${errors.toString()}." )
         internalServerError( errors )
       }, user => {
         logger.info( s"user was found: ${user.toString}." )
