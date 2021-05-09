@@ -8,6 +8,7 @@
 #GET     /persons                    controllers.PersonController.getPersons
 
 GET     /user/:username             co.com.application.controllers.queries.FindUserQuery.findUser( username: String )
+GET     /users                      co.com.application.controllers.queries.FindAllUsersQuery.findAll()
 GET     /posts                      co.com.application.controllers.queries.RequestPosts.request
 
 POST    /user                       co.com.application.controllers.commands.CreateUserCommand.create

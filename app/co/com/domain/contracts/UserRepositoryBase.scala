@@ -13,6 +13,7 @@ import scala.concurrent.ExecutionContext
 trait UserRepositoryBase {
 
   def add( user: User, validFrom: LocalDateTime ): Reader[DatabaseConfig[JdbcProfile], EitherTResult[Done]]
+  def findAll(): Reader[DatabaseConfig[JdbcProfile], EitherTResult[List[User]]]
   def findWithTask( username: String ): Reader[DatabaseConfig[JdbcProfile], EitherTResult[Option[User]]]
   def findWithFuture( username: String )( implicit ec: ExecutionContext ): Reader[DatabaseConfig[JdbcProfile], EitherFResult[Option[User]]]
   def generateId(): String

@@ -13,3 +13,7 @@ final case class SaveError( tableName: String ) extends PersistanceError {
 final case class FindError( tableName: String, id: String ) extends PersistanceError {
   override def errorMessage: String = s"An error occurred trying to find a $tableName with id: $id."
 }
+
+final case class FindAllError( tableName: String ) extends PersistanceError {
+  override def errorMessage: String = s"An error occurred trying to find all $tableName."
+}

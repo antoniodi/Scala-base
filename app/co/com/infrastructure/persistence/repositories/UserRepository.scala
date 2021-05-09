@@ -8,7 +8,7 @@ import co.com.infrastructure.Types.{ EitherFResult, EitherTResult }
 import co.com.infrastructure.persistence.generarUUID
 import co.com.infrastructure.persistence.tables.users
 import co.com.infrastructure.persistence.transformers.UserTransformer.{ userRowToUser, userToUserRow }
-import co.com.suite.error.{ FindError, SaveError, TransactionError }
+import co.com.suite.error.{ FindAllError, FindError, SaveError, TransactionError }
 import monix.eval.Task
 import org.slf4j
 import play.api.Logger
@@ -40,6 +40,22 @@ object UserRepository extends UserRepositoryBase {
             case error: Throwable =>
               logger.error( s"${SaveError( "user" ).errorMessage}.", error )
               Left( NonEmptyList.of( SaveError( "user" ), TransactionError( error.getMessage ) ) )
+          }
+      }
+  }
+
+  def findAll(): Reader[DatabaseConfig[JdbcProfile], EitherTResult[List[User]]] = Reader {
+    dbConfig: DatabaseConfig[JdbcProfile] =>
+
+      val query = users
+
+      EitherT {
+        Task.deferFuture( dbConfig.db.run( query.result ) )
+          .map( result => Right( result.map( userRowToUser ).toList ) )
+          .onErrorRecover {
+            case error: Throwable =>
+              logger.error( FindAllError( "users" ).errorMessage, error )
+              Left( NonEmptyList.of( FindAllError( "users" ), TransactionError( error.getMessage ) ) )
           }
       }
   }
