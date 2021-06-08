@@ -1,7 +1,7 @@
 package co.com.mock.repositories
 
 import akka.Done
-import cats.data.{EitherT, NonEmptyList, Reader}
+import cats.data.{ EitherT, NonEmptyList, Reader }
 import co.com.TestKitBase
 import co.com.application.controllers.commands.Dependency
 import co.com.domain.model.entities.User

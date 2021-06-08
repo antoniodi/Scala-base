@@ -5,7 +5,7 @@ import cats.data.NonEmptyList
 import co.com.factories.UserFactory.LouisUser
 import co.com.suite.error.ApplicationError
 import co.com.tool.FutureTool.waitForFutureResult
-import co.com.{TestKit, TestKitBase}
+import co.com.{ TestKit, TestKitBase }
 import org.scalatest.BeforeAndAfter
 import org.scalatest.matchers.must.Matchers.convertToAnyMustWrapper
 import slick.dbio.DBIO
@@ -55,7 +55,7 @@ class UserRepositoryTest extends TestKit with TestKitBase with BeforeAndAfter {
 
       "exists an user with the same username" should {
         "return an error" in {
-          val user = LouisUser.copy(  id = "a-a", email = "newuser@gmail.com" )
+          val user = LouisUser.copy( id = "a-a", email = "newuser@gmail.com" )
 
           val result = waitForFutureResult( UserRepository.add( user, validFrom ).run( dbConfigH2Test ).value.runToFuture )
 
@@ -65,7 +65,7 @@ class UserRepositoryTest extends TestKit with TestKitBase with BeforeAndAfter {
 
       "exists an user with the same email" should {
         "return an error" in {
-          val user = LouisUser.copy(  id = "a-a", username = "newuser" )
+          val user = LouisUser.copy( id = "a-a", username = "newuser" )
 
           val result = waitForFutureResult( UserRepository.add( user, validFrom ).run( dbConfigH2Test ).value.runToFuture )
 

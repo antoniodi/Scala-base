@@ -1,7 +1,7 @@
 package co.com
 
 import co.com.application.controllers.commands.Dependency
-import co.com.application.services.{PersistenceUserService, ServiceHelper}
+import co.com.application.services.{ PersistenceUserService, ServiceHelper }
 import co.com.domain.contracts.UserRepositoryBase
 import co.com.domain.services.UserService
 import co.com.infrastructure.persistence.repositories.configFileTest
@@ -9,7 +9,7 @@ import co.com.infrastructure.services.RequestPostService
 import com.google.inject.Injector
 import monix.execution.ExecutionModel.AlwaysAsyncExecution
 import monix.execution.schedulers.ExecutorScheduler
-import monix.execution.{Features, UncaughtExceptionReporter}
+import monix.execution.{ Features, UncaughtExceptionReporter }
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.EitherValues
 import org.scalatest.concurrent.ScalaFutures
@@ -18,12 +18,12 @@ import org.scalatest.wordspec.AnyWordSpec
 import play.api.inject.bind
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.ws.WSClient
-import play.api.{Application, Configuration, Environment}
+import play.api.{ Application, Configuration, Environment }
 import slick.basic.DatabaseConfig
 import slick.jdbc.JdbcProfile
 
-import java.util.concurrent.{Executors, SynchronousQueue, ThreadPoolExecutor, TimeUnit}
-import javax.inject.{Inject, Singleton}
+import java.util.concurrent.{ Executors, SynchronousQueue, ThreadPoolExecutor, TimeUnit }
+import javax.inject.{ Inject, Singleton }
 import scala.concurrent.ExecutionContext
 
 trait TestKitBase extends ScalaFutures with Matchers with EitherValues with MockFactory
@@ -32,7 +32,7 @@ abstract class TestKit extends AnyWordSpec {
 
   implicit val executionContextTest: ExecutionContext = ExecutionContext.fromExecutorService( Executors.newFixedThreadPool( 5 ) )
 
-  lazy val executor = new ThreadPoolExecutor(0, 10, 60L, TimeUnit.SECONDS, new SynchronousQueue[Runnable])
+  lazy val executor = new ThreadPoolExecutor( 0, 10, 60L, TimeUnit.SECONDS, new SynchronousQueue[Runnable] )
 
   implicit val executionSchedulerTest: ExecutorScheduler = ExecutorScheduler(
     executor,
@@ -53,9 +53,9 @@ abstract class TestKit extends AnyWordSpec {
 
 @Singleton
 class FalseConfigurations @Inject() (
-  wsClient:     WSClient,
-  injector:     Injector,
-  environment:  Environment
+    wsClient: WSClient,
+    injector: Injector,
+    environment: Environment
 ) extends Dependency( Configuration( configFileTest ), wsClient, injector, environment ) with TestKitBase {
 
   implicit val executionContext: ExecutionContext = ExecutionContext.Implicits.global

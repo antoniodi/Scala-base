@@ -1,6 +1,6 @@
 package co.com.tool
 
-import scala.concurrent.{Await, Future}
+import scala.concurrent.{ Await, Future }
 import scala.concurrent.duration.Duration
 import scala.util.Try
 

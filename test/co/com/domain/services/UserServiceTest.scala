@@ -3,8 +3,8 @@ package co.com.domain.services
 import akka.Done
 import cats.data.NonEmptyList
 import co.com.factories.UserFactory.LouisUser
-import co.com.suite.error.{UserAlreadyExits, UserNotFound}
-import co.com.{TestKit, TestKitBase}
+import co.com.suite.error.{ UserAlreadyExits, UserNotFound }
+import co.com.{ TestKit, TestKitBase }
 import org.scalatest.matchers.must.Matchers.convertToAnyMustWrapper
 
 class UserServiceTest extends TestKit with TestKitBase {

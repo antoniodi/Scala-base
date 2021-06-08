@@ -1,7 +1,7 @@
 package co.com.application.services
 
 import co.com.tool.FutureTool.waitForFutureResult
-import co.com.{TestKit, TestKitBase}
+import co.com.{ TestKit, TestKitBase }
 import monix.eval.Task
 import org.scalatest.matchers.must.Matchers.convertToAnyMustWrapper
 
